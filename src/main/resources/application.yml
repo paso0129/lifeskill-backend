@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: local
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+jwt:
+  secret: lifeskill-jwt-secret-key-must-be-at-least-256-bits-long-for-hs256

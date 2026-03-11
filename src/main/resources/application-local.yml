@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:lifeskill
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+
+file:
+  upload-dir: ./uploads
+
+kakao:
+  client-id: ${KAKAO_CLIENT_ID:your-kakao-client-id}
+  redirect-uri: http://localhost:3000/auth/kakao/callback
