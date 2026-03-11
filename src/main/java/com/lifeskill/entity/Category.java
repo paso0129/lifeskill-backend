@@ -1,5 +1,6 @@
 package com.lifeskill.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.lifeskill.enums.CategoryType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +20,7 @@ public class Category {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Unit unit;
 
     @Column(nullable = false)

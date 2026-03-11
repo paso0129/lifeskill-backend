@@ -27,6 +27,9 @@ public class KakaoOAuthService {
     @Value("${kakao.client-id:}")
     private String kakaoClientId;
 
+    @Value("${kakao.client-secret:}")
+    private String kakaoClientSecret;
+
     @Value("${kakao.redirect-uri:}")
     private String kakaoRedirectUri;
 
@@ -76,11 +79,29 @@ public class KakaoOAuthService {
                 .build();
     }
 
+    public String getKakaoAuthorizationUrl() {
+        return "https://kauth.kakao.com/oauth/authorize"
+                + "?client_id=" + kakaoClientId
+                + "&redirect_uri=" + kakaoRedirectUri
+                + "&response_type=code";
+    }
+
+    public String getClientId() {
+        return kakaoClientId;
+    }
+
+    public String getRedirectUri() {
+        return kakaoRedirectUri;
+    }
+
     @Transactional
     public LoginResponse completeProfile(String username, KakaoCompleteRequest request) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        user.setName(request.getName());
+        user.setGender(request.getGender());
+        user.setBirthDate(java.time.LocalDate.parse(request.getBirthDate()));
         user.setSchool(request.getSchool());
         user.setGrade(request.getGrade());
         user.setClassNum(request.getClassNum());
@@ -110,17 +131,30 @@ public class KakaoOAuthService {
         params.add("client_id", kakaoClientId);
         params.add("redirect_uri", kakaoRedirectUri);
         params.add("code", code);
+        if (kakaoClientSecret != null && !kakaoClientSecret.isEmpty()) {
+            params.add("client_secret", kakaoClientSecret);
+        }
 
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
 
-        @SuppressWarnings("unchecked")
-        Map<String, Object> response = restTemplate.postForObject(tokenUrl, request, Map.class);
+        try {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> response = restTemplate.postForObject(tokenUrl, request, Map.class);
 
-        if (response == null || !response.containsKey("access_token")) {
-            throw new RuntimeException("Failed to get Kakao access token");
+            if (response == null || !response.containsKey("access_token")) {
+                throw new RuntimeException("Failed to get Kakao access token");
+            }
+
+            return (String) response.get("access_token");
+        } catch (org.springframework.web.client.HttpClientErrorException e) {
+            System.err.println("=== KAKAO TOKEN ERROR ===");
+            System.err.println("Status: " + e.getStatusCode());
+            System.err.println("Body: " + e.getResponseBodyAsString());
+            System.err.println("client_id: " + kakaoClientId);
+            System.err.println("redirect_uri: " + kakaoRedirectUri);
+            System.err.println("code: " + code);
+            throw e;
         }
-
-        return (String) response.get("access_token");
     }
 
     @SuppressWarnings("unchecked")

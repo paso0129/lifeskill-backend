@@ -8,6 +8,8 @@ import com.lifeskill.service.AuthService;
 import com.lifeskill.service.KakaoOAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +40,14 @@ public class AuthController {
     public ResponseEntity<Map<String, Boolean>> checkUsername(@RequestBody Map<String, String> request) {
         boolean exists = authService.checkUsername(request.get("username"));
         return ResponseEntity.ok(Map.of("exists", exists));
+    }
+
+    @GetMapping("/kakao/authorize")
+    public ResponseEntity<Void> kakaoAuthorize() {
+        String kakaoAuthUrl = kakaoOAuthService.getKakaoAuthorizationUrl();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(java.net.URI.create(kakaoAuthUrl));
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
     @PostMapping("/kakao")
