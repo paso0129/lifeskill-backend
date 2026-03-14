@@ -26,6 +26,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> {})
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
@@ -38,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/grades/**").permitAll()
                         .requestMatchers("/api/grades/*/units").permitAll()
                         .requestMatchers("/api/units/*/categories").permitAll()
+                        .requestMatchers("/api/units/*/categories/*/activities").permitAll()
                         .requestMatchers("/api/categories/*/activities").permitAll()
                         .requestMatchers("/api/activities/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()

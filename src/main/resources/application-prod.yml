@@ -26,7 +26,7 @@ kakao:
   redirect-uri: ${KAKAO_REDIRECT_URI:https://www.gophysicaltraining.com/auth/kakao/callback}
 
 cors:
-  allowed-origins: ${CORS_ORIGINS:https://www.gophysicaltraining.com}
+  allowed-origins: ${CORS_ORIGINS:https://www.gophysicaltraining.com,https://gophysicaltraining.com}
 
 server:
   port: 8080

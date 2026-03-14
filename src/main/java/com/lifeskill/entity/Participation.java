@@ -34,6 +34,12 @@ public class Participation {
     @Column(columnDefinition = "TEXT")
     private String reviewText;
 
+    // 운동 횟수 (예: 10회)
+    private Integer exerciseCount;
+
+    // 운동 세트 수 (예: 3세트)
+    private Integer exerciseSets;
+
     @Builder.Default
     private LocalDateTime submittedAt = LocalDateTime.now();
 

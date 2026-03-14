@@ -28,13 +28,15 @@ public class ParticipationController {
             Authentication authentication,
             @RequestParam("activityId") Long activityId,
             @RequestParam(value = "reviewText", required = false) String reviewText,
-            @RequestParam(value = "file", required = false) MultipartFile file) {
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam(value = "exerciseCount", required = false) Integer exerciseCount,
+            @RequestParam(value = "exerciseSets", required = false) Integer exerciseSets) {
 
         String fileUrl = fileStorageService.storeFile(file);
         String username = authentication.getName();
 
         Participation participation = participationService.createParticipation(
-                username, activityId, fileUrl, reviewText);
+                username, activityId, fileUrl, reviewText, exerciseCount, exerciseSets);
 
         return ResponseEntity.ok(participation);
     }

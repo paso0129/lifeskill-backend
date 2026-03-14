@@ -25,6 +25,12 @@ public class ParticipationService {
 
     @Transactional
     public Participation createParticipation(String username, Long activityId, String fileUrl, String reviewText) {
+        return createParticipation(username, activityId, fileUrl, reviewText, null, null);
+    }
+
+    @Transactional
+    public Participation createParticipation(String username, Long activityId, String fileUrl, String reviewText,
+                                              Integer exerciseCount, Integer exerciseSets) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("사용자", username));
         Activity activity = activityRepository.findById(activityId)
@@ -35,6 +41,8 @@ public class ParticipationService {
                 .activity(activity)
                 .fileUrl(fileUrl)
                 .reviewText(reviewText)
+                .exerciseCount(exerciseCount)
+                .exerciseSets(exerciseSets)
                 .status("PENDING")
                 .build();
 

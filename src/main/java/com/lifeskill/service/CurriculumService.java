@@ -5,6 +5,7 @@ import com.lifeskill.entity.Activity;
 import com.lifeskill.entity.Category;
 import com.lifeskill.entity.Grade;
 import com.lifeskill.entity.Unit;
+import com.lifeskill.enums.CategoryType;
 import com.lifeskill.exception.ResourceNotFoundException;
 import com.lifeskill.repository.ActivityRepository;
 import com.lifeskill.repository.CategoryRepository;
@@ -40,6 +41,13 @@ public class CurriculumService {
 
     public List<ActivityResponse> getActivitiesByCategory(Long categoryId) {
         List<Activity> activities = activityRepository.findByCategoryIdOrderByOrderNumAsc(categoryId);
+        return activities.stream().map(this::toActivityResponse).toList();
+    }
+
+    public List<ActivityResponse> getActivitiesByUnitAndType(Long unitId, CategoryType type) {
+        Category category = categoryRepository.findByUnitIdAndType(unitId, type)
+                .orElseThrow(() -> new ResourceNotFoundException("카테고리", unitId + "/" + type.name()));
+        List<Activity> activities = activityRepository.findByCategoryIdOrderByOrderNumAsc(category.getId());
         return activities.stream().map(this::toActivityResponse).toList();
     }
 
