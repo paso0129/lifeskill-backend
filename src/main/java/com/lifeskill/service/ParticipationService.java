@@ -56,6 +56,11 @@ public class ParticipationService {
     }
 
     @Transactional(readOnly = true)
+    public Page<Participation> getMyParticipationsPaged(Long userId, Pageable pageable) {
+        return participationRepository.findByUserId(userId, pageable);
+    }
+
+    @Transactional(readOnly = true)
     public List<Participation> getParticipationsByActivity(Long activityId) {
         return participationRepository.findByActivityId(activityId);
     }
@@ -68,6 +73,16 @@ public class ParticipationService {
     @Transactional(readOnly = true)
     public Page<Participation> getAllParticipationsPaged(Pageable pageable) {
         return participationRepository.findAll(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Participation> getParticipationsByStatus(String status, Pageable pageable) {
+        return participationRepository.findByStatus(status, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Participation> getParticipationsByUserAndStatus(Long userId, String status, Pageable pageable) {
+        return participationRepository.findByUserIdAndStatus(userId, status, pageable);
     }
 
     @Transactional

@@ -15,4 +15,8 @@ public interface ParticipationRepository extends JpaRepository<Participation, Lo
     Page<Participation> findByUserId(Long userId, Pageable pageable);
     Page<Participation> findByActivityId(Long activityId, Pageable pageable);
     Page<Participation> findAll(Pageable pageable);
+    Page<Participation> findByStatus(String status, Pageable pageable);
+    Page<Participation> findByUserIdAndStatus(Long userId, String status, Pageable pageable);
+    long countByUserId(Long userId);
+    long countByStatus(String status);
 }
