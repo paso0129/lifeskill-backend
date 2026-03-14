@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/categories/*/activities").permitAll()
                         .requestMatchers("/api/activities/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/teacher/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

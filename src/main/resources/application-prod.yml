@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db.aucboipkmqxkbiokvery.supabase.co:5432/postgres
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: ${DB_PASSWORD:Eowhdud123^^}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      platform: postgresql
+
+file:
+  upload-dir: /home/ec2-user/uploads
+
+kakao:
+  client-id: ${KAKAO_CLIENT_ID:e84ce356948e78dfda116f679826b51b}
+  client-secret: ${KAKAO_CLIENT_SECRET:hTjfT4KxxaEAkRp8bquchnaU8RL9eC6Y}
+  redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:3000/auth/kakao/callback}
+
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+
+server:
+  port: 8080

@@ -5,9 +5,13 @@ import com.lifeskill.dto.LoginResponse;
 import com.lifeskill.dto.SignupRequest;
 import com.lifeskill.entity.User;
 import com.lifeskill.enums.UserRole;
+import com.lifeskill.exception.BusinessException;
+import com.lifeskill.exception.DuplicateResourceException;
+import com.lifeskill.exception.ResourceNotFoundException;
 import com.lifeskill.repository.UserRepository;
 import com.lifeskill.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +27,7 @@ public class AuthService {
     @Transactional
     public LoginResponse signup(SignupRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new DuplicateResourceException("이미 사용 중인 아이디입니다.");
         }
 
         User user = User.builder()
@@ -54,10 +58,10 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByUsername(request.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("사용자", request.getUsername()));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new BusinessException("비밀번호가 일치하지 않습니다.", HttpStatus.UNAUTHORIZED);
         }
 
         String token = jwtTokenProvider.createToken(user.getUsername(), user.getRole().name());

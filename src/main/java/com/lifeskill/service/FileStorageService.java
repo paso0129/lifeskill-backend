@@ -1,6 +1,7 @@
 package com.lifeskill.service;
 
 import com.lifeskill.config.FileUploadConfig;
+import com.lifeskill.exception.FileStorageException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,7 @@ public class FileStorageService {
 
             return "/uploads/" + storedFilename;
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file", e);
+            throw new FileStorageException("파일 저장에 실패했습니다: " + e.getMessage());
         }
     }
 }

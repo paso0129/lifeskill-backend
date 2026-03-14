@@ -5,6 +5,7 @@ import com.lifeskill.entity.Activity;
 import com.lifeskill.entity.Category;
 import com.lifeskill.entity.Grade;
 import com.lifeskill.entity.Unit;
+import com.lifeskill.exception.ResourceNotFoundException;
 import com.lifeskill.repository.ActivityRepository;
 import com.lifeskill.repository.CategoryRepository;
 import com.lifeskill.repository.GradeRepository;
@@ -44,7 +45,7 @@ public class CurriculumService {
 
     public ActivityResponse getActivityById(Long activityId) {
         Activity activity = activityRepository.findById(activityId)
-                .orElseThrow(() -> new RuntimeException("Activity not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("활동", activityId));
         return toActivityResponse(activity);
     }
 
