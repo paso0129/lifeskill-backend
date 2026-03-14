@@ -23,10 +23,10 @@ file:
 kakao:
   client-id: ${KAKAO_CLIENT_ID:e84ce356948e78dfda116f679826b51b}
   client-secret: ${KAKAO_CLIENT_SECRET:hTjfT4KxxaEAkRp8bquchnaU8RL9eC6Y}
-  redirect-uri: ${KAKAO_REDIRECT_URI:https://gophysicaltraining.com/auth/kakao/callback}
+  redirect-uri: ${KAKAO_REDIRECT_URI:https://www.gophysicaltraining.com/auth/kakao/callback}
 
 cors:
-  allowed-origins: ${CORS_ORIGINS:https://gophysicaltraining.com}
+  allowed-origins: ${CORS_ORIGINS:https://www.gophysicaltraining.com}
 
 server:
   port: 8080
