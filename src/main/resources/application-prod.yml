@@ -12,11 +12,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
-    defer-datasource-initialization: true
+    defer-datasource-initialization: false
   sql:
     init:
-      mode: always
-      platform: postgresql
+      mode: never
 
 file:
   upload-dir: /home/ec2-user/uploads
@@ -24,10 +23,10 @@ file:
 kakao:
   client-id: ${KAKAO_CLIENT_ID:e84ce356948e78dfda116f679826b51b}
   client-secret: ${KAKAO_CLIENT_SECRET:hTjfT4KxxaEAkRp8bquchnaU8RL9eC6Y}
-  redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:3000/auth/kakao/callback}
+  redirect-uri: ${KAKAO_REDIRECT_URI:https://gophysicaltraining.com/auth/kakao/callback}
 
 cors:
-  allowed-origins: ${CORS_ORIGINS:http://localhost:3000}
+  allowed-origins: ${CORS_ORIGINS:https://gophysicaltraining.com}
 
 server:
   port: 8080
